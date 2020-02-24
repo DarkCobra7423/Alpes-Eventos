@@ -89,6 +89,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ALPES Inicio De Sesion");
+        setResizable(false);
 
         jLabel1.setText("Usuario:");
 
