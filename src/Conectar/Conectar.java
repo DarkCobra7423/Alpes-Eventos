@@ -19,11 +19,17 @@ public class Conectar {
     
     public Connection conexion(){
         try{
-            Class.forName("com.mysql.jdbc.Drive");
-            conect=DriverManager.getConnection("","","");
-            System.out.println("Conexion estable");
+            
+            String url="www.db4free.net:3306";
+            String bd="alpes_eventos";
+            String usu="angelpadilla1234";
+            String pass="QWERTY12345c";
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            conect = DriverManager.getConnection("jdbc:mysql://" + url + "/" + bd, usu, pass);
+            System.out.println("Connection established!");
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "Base de datos no encontrada \n"+ex);
+            JOptionPane.showMessageDialog(null, "Base de datos Alpes_Eventos no encontrada \n"+ex);
         }
         return conect;
     }

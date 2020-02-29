@@ -17,6 +17,77 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
     }
+    /*
+    void Bloquear(){
+        btnCaja.setEnabled(false);
+        btnConsulta.setEnabled(false);
+        btnBitacora.setEnabled(false);
+        jmNuevoAcceso.setEnabled(false);///-<-<-<-<-<-<-<
+        jmAgregarProducto.setEnabled(false);
+        jmDiaria.setEnabled(false);
+        jmSemanal.setEnabled(false);
+        jmMensual.setEnabled(false);
+        jmNuevoProveedor.setEnabled(false);
+        jmMostrarProveedor.setEnabled(false);
+        jmCodBarra.setEnabled(false);
+        jmAgregarClienteSA.setEnabled(false);
+        jmSistemaApartado.setEnabled(false);
+        jmCorteCaja.setEnabled(false);
+       
+    }   */
+    
+    public void AccesoNivel(){//METODO PUBLIC PARA ACCESO
+        ControlAcceso ca=new ControlAcceso();
+        String tipo_usuario=ca.tipoGlobal;
+        
+        if(tipo_usuario.equals("Administrador")){
+            System.out.println("if-Administrador "+tipo_usuario);//----------
+            //btnCaja.setEnabled(true);
+            //btnConsulta.setEnabled(true);
+            //btnBitacora.setEnabled(true);
+            //jmNuevoAcceso.setEnabled(true);
+            //jmAgregarProducto.setEnabled(true);
+            //jmDiaria.setEnabled(true);
+            //jmSemanal.setEnabled(true);
+            //jmMensual.setEnabled(true);
+            //jmNuevoProveedor.setEnabled(true);
+            //jmMostrarProveedor.setEnabled(true);
+            //jmCodBarra.setEnabled(true);
+            //jmAgregarClienteSA.setEnabled(true);
+            //jmSistemaApartado.setEnabled(true);
+            //jmCorteCaja.setEnabled(true);
+           
+            /*
+            ACCESO GLOBAL AL SISTEMA
+            */
+        }else if(tipo_usuario.equals("Cliente")){
+            System.out.println("if-Cliente "+tipo_usuario);///---------------
+            //btnCaja.setEnabled(true);
+            //btnConsulta.setEnabled(true);
+            //btnBitacora.setEnabled(true);
+            //jmNuevoAcceso.setEnabled(false);
+            //jmAgregarProducto.setEnabled(true);
+            //jmDiaria.setEnabled(true);
+            //jmSemanal.setEnabled(true);
+            //jmMensual.setEnabled(true);
+            //jmNuevoProveedor.setEnabled(true);
+            //jmMostrarProveedor.setEnabled(true);
+            //jmCodBarra.setEnabled(true);
+            //jmAgregarClienteSA.setEnabled(true);
+            //jmSistemaApartado.setEnabled(true);
+            //jmCorteCaja.setEnabled(true);
+           
+            /*
+            --ACCESO 
+            VENDER UNIFORMES ------
+            CONSULTAR UNIFORMES ----
+            CONTROL DE VENTAS UNIFORMES --
+            CORTE CAJA---
+            CONSULTAR FUERA DE SISTEMA------------
+            AGREGAR PROVEEDORES--
+            */
+        }
+    }//FIN DEL METODO ACCESO NIVEL  */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,17 +98,53 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 676, Short.MAX_VALUE)
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 419, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jDesktopPane1)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jDesktopPane1)
+        );
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -79,5 +186,10 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
