@@ -64,6 +64,7 @@ public class ControlAcceso {
             }else{
                 tipoGlobal=tipo;
                 System.out.println("Condicion else controlacceso ---->"+tipoGlobal);
+               
             }
             
             IniciarSistema();

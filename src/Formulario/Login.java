@@ -9,6 +9,8 @@ import Conectar.Conectar;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,9 +37,11 @@ public class Login extends javax.swing.JFrame {
         
         if((usu.equals("admin")) && (pass.equals("admin"))){
             this.dispose();
-            
-            JOptionPane.showMessageDialog(null, "Welcome M.R. Dark Cobra \n\n Hacked System");
-            
+            /////////////////CON IMAGENES//////////////////////////////////////////////////
+            Icon icono = new ImageIcon(getClass().getResource("/Imagenes/seguridad1_1.png"));
+            //JOptionPane.showMessageDialog(null," Aprendiendo a poner imagenes ", "Imagen Java", JOptionPane.PLAIN_MESSAGE, icono);
+            JOptionPane.showMessageDialog(null,"Welcome M.R. Dark Cobra \n\n Hacked System", "Security Alert", JOptionPane.PLAIN_MESSAGE, icono);
+            ////////////////CON IMAGENES///////////////////////////////////////////////////
             ControlAcceso ca=new ControlAcceso();
             ca.NivelAcceso(usu);
             this.dispose();
@@ -53,7 +57,7 @@ public class Login extends javax.swing.JFrame {
                 Resultado=1;
                 if(Resultado==1){
                     this.dispose();
-                    JOptionPane.showMessageDialog(null, "Bienvenido A Alpes Eventos "+usu);
+                    JOptionPane.showMessageDialog(null, "Bienvenido Alpes Eventos "+usu);
                     ControlAcceso ca=new ControlAcceso();
                     ca.NivelAcceso(usu);
                     this.dispose();
