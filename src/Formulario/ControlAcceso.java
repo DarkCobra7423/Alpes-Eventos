@@ -19,9 +19,7 @@ public class ControlAcceso {
     //VARIABLES GLOBALES
     public static String idGlobal="";
     public static String nomGlobal="";
-    public static String apellidoGlobal="";
-    public static String edadGlobal="";
-    public static String direccionGlobal="";
+    public static String NacGlobal="";
     public static String usuarioGlobal="";
     public static String passGlobal="";
     public static String tipoGlobal="";
@@ -29,10 +27,9 @@ public class ControlAcceso {
     
     void NivelAcceso(String Usuario){
         
-        String id="", nom="", apellido="", edad="", direccion="", usuario="", pass="";
-        String tipo="";
+        String id="", nom="", nacimiento="", usuario="", pass="", tipo="";
         
-        String nivel="SELECT * FROM login WHERE usuario_usuario='"+Usuario+"'";
+        String nivel="SELECT * FROM Registro_Usuarios WHERE `usuario`='"+Usuario+"'";
         
         try{
             Statement st =cn.createStatement();
@@ -41,20 +38,16 @@ public class ControlAcceso {
             while(rs.next()){
                 id=rs.getString(1);
                 nom=rs.getString(2);
-                apellido=rs.getString(3);
-                edad=rs.getString(4);
-                direccion=rs.getString(5);
-                usuario=rs.getString(6);
-                pass=rs.getString(7);
-                tipo=rs.getString(8);
+                tipo=rs.getString(3);
+                nacimiento=rs.getString(4);
+                usuario=rs.getString(5);
+                pass=rs.getString(6);
             }//FIN WHILE
             
             ///////VALIDACION GLOBAL///////////////////////////////
             idGlobal=id;
             nomGlobal=nom;
-            apellidoGlobal=apellido;
-            edadGlobal=edad;
-            direccionGlobal=direccion;
+            NacGlobal=nacimiento;
             usuarioGlobal=usuario;
             passGlobal=pass;
             

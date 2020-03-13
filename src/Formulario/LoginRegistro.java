@@ -5,6 +5,14 @@
  */
 package Formulario;
 
+import Conectar.Conectar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author TAMY
@@ -17,17 +25,15 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
     public LoginRegistro() {
         initComponents();
     }
-    //VARIABLES GLOBALES
-    public String nombre, tipo, nacimiento, usuario, contrasena, confircontrasena;
     
     void ValidarDatos(){
         
-        nombre=txtNombre.getText();
-        tipo=String.valueOf(jcbTipo.getSelectedItem());
-        nacimiento=txtNacimiento.getText();
-        usuario=txtUsuario.getText();
-        contrasena=String.valueOf(txtContrasena.getPassword());
-        confircontrasena=String.valueOf(txtConfirContrasena.getPassword());
+        //nombre=txtNombre.getText();
+        //tipo=String.valueOf(jcbTipo.getSelectedItem());
+        //nacimiento=txtNacimiento.getText();
+        //usuario=txtUsuario.getText();
+        String contrasena=String.valueOf(txtContrasena.getPassword());
+        String confircontrasena=String.valueOf(txtConfirContrasena.getPassword());
         
         if(contrasena.equals(confircontrasena)){
             //System.out.println("Contraseña Incorrecta "+contrasena+" "+confircontrasena);
@@ -35,6 +41,8 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
                 //                      <html><br><html>
                 jlErrorCheck.setText("<html>Acepte los terminos<br>y condiciones<html>");
                 //System.out.println("check no seleccionado ");
+            }else{
+                GuardarRegistro();
             }
         }else{
             //adminSystem.out.println("check seleccionado ");
@@ -42,8 +50,45 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
         }
     }
     
-    void GuardarRegistro(){//INCOMPLETO
+    void GuardarRegistro(){//COMPLETO
+        String id="0";
+        //String nombre=txtNombre.getText();
+        String personal=String.valueOf(jcbTipo.getSelectedItem());
+        //String nacimiento=txtNacimiento.getText();
+        //String usuario=txtUsuario.getText();
+        String Contrasena=String.valueOf(txtContrasena.getPassword());
         
+        String consulta="INSERT INTO Registro_Usuarios (`idLogin`, `nombre_completo`, `personal`, `fecha_nacimiento`, `usuario`, `contrasena`) VALUES (?,?,?,?,?,?);";
+        
+        try{
+            //////////PARA OBTENER EL DATO DE JCHOOSER////////////////////////////
+            Date fecha=jdNacimiento.getDate();
+            DateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+            String nacimiento=f.format(fecha);
+            /////////////////////////////////////////////////
+            PreparedStatement pst = cn.prepareStatement(consulta);
+            pst.setString(1, id);
+            pst.setString(2, txtNombre.getText());
+            pst.setString(3, personal);
+            pst.setString(4, nacimiento);
+            pst.setString(5, txtUsuario.getText());
+            pst.setString(6, Contrasena);
+            
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Se a registrado el usuario");
+            Limpiar();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error en el metodo guardar registro\n"+e);
+        }
+    }
+    
+    void Limpiar(){
+        txtNombre.setText("");
+        jdNacimiento.setCalendar(null);
+        txtUsuario.setText("");
+        txtContrasena.setText("");
+        txtConfirContrasena.setText("");
+        jckTerminos.setSelected(false);
     }
 
     /**
@@ -70,9 +115,9 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
         jcbTipo = new javax.swing.JComboBox<>();
         btnGuardar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        txtNacimiento = new javax.swing.JTextField();
         jlErrorPass = new javax.swing.JLabel();
         jlErrorCheck = new javax.swing.JLabel();
+        jdNacimiento = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
         setTitle("Base De Registro ALPES");
@@ -139,12 +184,6 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Fecha De Nacimiento:");
 
-        txtNacimiento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNacimientoActionPerformed(evt);
-            }
-        });
-
         jlErrorPass.setForeground(new java.awt.Color(204, 0, 0));
 
         jlErrorCheck.setForeground(new java.awt.Color(204, 0, 0));
@@ -181,20 +220,20 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
                                             .addComponent(jLabel8)
                                             .addComponent(jLabel3))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtContrasena)
-                                            .addComponent(txtNombre)
-                                            .addComponent(jcbTipo, 0, 137, Short.MAX_VALUE)
-                                            .addComponent(txtNacimiento)
                                             .addComponent(txtUsuario)
-                                            .addComponent(txtConfirContrasena, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                            .addComponent(txtConfirContrasena, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jcbTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jdNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addComponent(jlErrorPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(46, 46, 46)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jckTerminos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jlErrorCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 17, Short.MAX_VALUE)))
+                        .addGap(16, 16, 16)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -212,11 +251,11 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jcbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(txtNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                    .addComponent(jdNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -257,11 +296,6 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
         jcbTipo.transferFocus();
     }//GEN-LAST:event_jcbTipoActionPerformed
 
-    private void txtNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNacimientoActionPerformed
-        // TODO add your handling code here:
-        txtNacimiento.transferFocus();
-    }//GEN-LAST:event_txtNacimientoActionPerformed
-
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
         txtUsuario.transferFocus();
@@ -295,12 +329,14 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JComboBox<String> jcbTipo;
     private javax.swing.JCheckBox jckTerminos;
+    private com.toedter.calendar.JDateChooser jdNacimiento;
     private javax.swing.JLabel jlErrorCheck;
     private javax.swing.JLabel jlErrorPass;
     private javax.swing.JPasswordField txtConfirContrasena;
     private javax.swing.JPasswordField txtContrasena;
-    private javax.swing.JTextField txtNacimiento;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+    Conectar cc=new Conectar();
+    Connection cn=cc.conexion();
 }
