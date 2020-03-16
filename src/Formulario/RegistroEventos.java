@@ -5,6 +5,14 @@
  */
 package Formulario;
 
+import Conectar.Conectar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author TAMY-IA
@@ -19,7 +27,7 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
     }
     
     void Validar(){//INCOMPLETO NO FUNCIONA LA CONDICION
-        if((txtTipo.getText()=="")||(txtCliente.getText()=="")||(txtInvitados.getText()=="")||(txtMesas.getText()=="")||(txtFecha.getText()=="")||(txtHora.getText()=="")){
+        if((txtTipo.getText()=="")||(txtCliente.getText()=="")||(txtInvitados.getText()=="")||(txtMesas.getText()=="")||(txtHora.getText()=="")){
           jlError.setText("Por Favor Llene Todos Los Campos");
           System.out.println("Funciona en true");
         }else{
@@ -28,8 +36,50 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
         }
     }
     
-    void Registrar(){
+    void Registrar(){   //COMPLETO
         System.out.println("Funciona en else2");
+        
+        String id="0";
+        String nulo="0";
+        String nulo1="false";
+        
+        String consulta="INSERT INTO Registro_Eventos (`idRegistroEventos`, `tipo`, `cliente`, `no_invitado`, `no_mesa`, `fecha`, `hora`,`invitados_mesa`, `dividir_mesa`)VALUES(?,?,?,?,?,?,?,?,?)";
+        
+        try{
+            //////////////////////////////
+            Date fecha=jdFecha.getDate();
+            DateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+            String fecha1=f.format(fecha);
+            //////////////////////////////
+            
+            PreparedStatement pst = cn.prepareStatement(consulta);
+            pst.setString(1, id);
+            pst.setString(2, txtTipo.getText());
+            pst.setString(3, txtCliente.getText());
+            pst.setString(4, txtInvitados.getText());
+            pst.setString(5, txtMesas.getText());
+            pst.setString(6, fecha1);
+            pst.setString(7, txtHora.getText());
+            pst.setString(8, nulo);
+            pst.setString(9, nulo1);
+            
+            pst.executeUpdate();
+            Limpiar();
+            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error al registrar el evento\n"+ex);
+        }
+    }
+    
+    void Limpiar(){ //COMPLETO
+        txtTipo.setText("");
+        txtCliente.setText("");
+        txtInvitados.setText("");
+        txtMesas.setText("");
+        jdFecha.setCalendar(null);
+        txtHora.setText("");
+        
+        this.dispose();
     }
 
     /**
@@ -55,10 +105,11 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
         txtCliente = new javax.swing.JTextField();
         txtInvitados = new javax.swing.JTextField();
         txtMesas = new javax.swing.JTextField();
-        txtFecha = new javax.swing.JTextField();
         txtHora = new javax.swing.JTextField();
         jlError = new javax.swing.JLabel();
+        jdFecha = new com.toedter.calendar.JDateChooser();
 
+        setClosable(true);
         setTitle("Registro de eventos ALPES");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -79,6 +130,11 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
         jButton1.setText("Regresar");
 
         jButton2.setText("Siguiente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         txtHora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,12 +162,12 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
                             .addComponent(txtCliente)
                             .addComponent(txtInvitados)
                             .addComponent(txtMesas)
-                            .addComponent(txtFecha)
                             .addComponent(txtHora)
+                            .addComponent(jlError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jlError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jdFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(20, 20, 20))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,9 +206,9 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtMesas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jdFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -191,6 +247,11 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
         Validar();
     }//GEN-LAST:event_txtHoraActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Validar();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -203,12 +264,14 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private com.toedter.calendar.JDateChooser jdFecha;
     private javax.swing.JLabel jlError;
     private javax.swing.JTextField txtCliente;
-    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtHora;
     private javax.swing.JTextField txtInvitados;
     private javax.swing.JTextField txtMesas;
     private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
+    Conectar cc=new Conectar();
+    Connection cn=cc.conexion();
 }
