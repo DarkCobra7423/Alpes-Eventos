@@ -34,7 +34,7 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
             String[] registros=new String[5];
             model=new DefaultTableModel(null, titulos);
             
-            String consulta="SELECT * FROM `Asistencia_Invitado` WHERE CONCAT (`idAsistencia_Invitado`,'', `nombre`,'', `relacion`,'', `mesa`,'', `asistencia`) LIKE '%"+valor+"%'";
+            String consulta="SELECT * FROM `asistencia_invitado` WHERE CONCAT (`idAsistencia_Invitado`,'', `nombre`,'', `relacion`,'', `mesa`,'', `asistencia`) LIKE '%"+valor+"%'";
             
             Statement st = cn.createStatement(); 
             ResultSet rs=st.executeQuery(consulta);
@@ -223,7 +223,7 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
             }else{
                 String codigo=(String)tbInvitados.getValueAt(filase1, 0);
                 //String con="UPDATE `Asistencia_Invitado` SET `asistencia` = '✓' WHERE `idAsistencia_Invitado` ='"+codigo+"'";
-                String sql="UPDATE Asistencia_Invitado SET `asistencia`='"+asistir+"' WHERE `idAsistencia_Invitado`='"+codigo+"'";
+                String sql="UPDATE asistencia_invitado SET `asistencia`='"+asistir+"' WHERE `idAsistencia_Invitado`='"+codigo+"'";
                 System.out.println("Funciona3>>>>> "+codigo+" "+asistir);
                 try{
                     PreparedStatement pst = cn.prepareStatement(sql);

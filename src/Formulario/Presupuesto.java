@@ -680,7 +680,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         String folio=jlFolio.getText();
         String folio1="";
-        String sql="SELECT * FROM Presupuesto WHERE folio='"+folio+"'";
+        String sql="SELECT * FROM presupuesto WHERE folio='"+folio+"'";
         
         try{
             Statement st=cn.createStatement();
@@ -738,7 +738,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Por favor seleccione un adeudo");
             }else{
                 String folio=(String)tbPagos.getValueAt(filase1, 1);
-                String con="UPDATE Pagos SET `estado` = 'Pendiente' WHERE nombre ='"+folio+"'";
+                String con="UPDATE pagos SET `estado` = 'Pendiente' WHERE nombre ='"+folio+"'";
         
                 try{
                     PreparedStatement pst=cn.prepareStatement(con);
@@ -762,7 +762,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Por favor seleccione un adeudo");
             }else{
                 String folio=(String)tbPagos.getValueAt(filase1, 1);
-                String con="UPDATE Pagos SET `estado` = 'Pagado' WHERE nombre ='"+folio+"'";
+                String con="UPDATE pagos SET `estado` = 'Pagado' WHERE nombre ='"+folio+"'";
         
                 try{
                     PreparedStatement pst=cn.prepareStatement(con);
@@ -788,7 +788,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Seleccione el pago a eliminar");
             }else{
                 String cod=(String)tbPagos.getValueAt(filase1, 0);
-                String eliminarSQL="DELETE FROM Pagos WHERE nombre='"+cod+"'";
+                String eliminarSQL="DELETE FROM pagos WHERE nombre='"+cod+"'";
                 try{
                     PreparedStatement pst = cn.prepareStatement(eliminarSQL);
                     pst.executeUpdate();
