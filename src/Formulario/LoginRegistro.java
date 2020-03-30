@@ -58,7 +58,7 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
         //String usuario=txtUsuario.getText();
         String Contrasena=String.valueOf(txtContrasena.getPassword());
         
-        String consulta="INSERT INTO Registro_Usuarios (`idLogin`, `nombre_completo`, `personal`, `fecha_nacimiento`, `usuario`, `contrasena`) VALUES (?,?,?,?,?,?);";
+        String consulta="INSERT INTO usuario (`idUsuario`, `nombre`, `personal`, `fechanac`, `usuario`, `contraseña`)VALUES(?,?,?,?,?,?)";
         
         try{
             //////////PARA OBTENER EL DATO DE JCHOOSER////////////////////////////

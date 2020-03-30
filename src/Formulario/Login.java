@@ -33,7 +33,7 @@ public class Login extends javax.swing.JFrame {
         String usu=txtUsuario.getText();
         String pass=String.valueOf(txtPassword.getPassword());
         
-        String SQL="SELECT * FROM Registro_Usuarios WHERE `usuario`='"+usu+"' AND `contrasena`='"+pass+"'";
+        String SQL="SELECT * FROM Usuario WHERE `usuario`='"+usu+"' AND `contrasena`='"+pass+"'";
         
         if((usu.equals("admin")) && (pass.equals("admin"))){
             this.dispose();

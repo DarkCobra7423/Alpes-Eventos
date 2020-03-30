@@ -29,7 +29,7 @@ public class ControlAcceso {
         
         String id="", nom="", nacimiento="", usuario="", pass="", tipo="";
         
-        String nivel="SELECT * FROM Registro_Usuarios WHERE `usuario`='"+Usuario+"'";
+        String nivel="SELECT * FROM Usuario WHERE `usuario`='"+Usuario+"'";
         
         try{
             Statement st =cn.createStatement();

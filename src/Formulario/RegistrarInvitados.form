@@ -57,9 +57,9 @@
                       <Group type="102" attributes="0">
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jRadioButton3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbEnviada" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="72" max="32767" attributes="0"/>
-                          <Component id="jRadioButton4" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbNoEnviada" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -69,22 +69,22 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextField1" max="32767" attributes="0"/>
+                              <Component id="txtNota" max="32767" attributes="0"/>
                               <Component id="txtNombre" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
-                                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbAdulto" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbNiño" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbBebe" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
-                                          <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="rbMasculino" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
+                                          <Component id="rbFemenino" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -124,25 +124,25 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbMasculino" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbFemenino" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbAdulto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbNiño" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbBebe" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNota" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbEnviada" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbNoEnviada" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -194,27 +194,27 @@
             <Property name="text" type="java.lang.String" value="Genero:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+        <Component class="javax.swing.JRadioButton" name="rbMasculino">
           <Properties>
             <Property name="text" type="java.lang.String" value="Masculino"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton2">
+        <Component class="javax.swing.JRadioButton" name="rbFemenino">
           <Properties>
             <Property name="text" type="java.lang.String" value="Femenino"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+        <Component class="javax.swing.JCheckBox" name="cbAdulto">
           <Properties>
             <Property name="text" type="java.lang.String" value="Adulto"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+        <Component class="javax.swing.JCheckBox" name="cbNi&#xf1;o">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ni&#xf1;o"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox3">
+        <Component class="javax.swing.JCheckBox" name="cbBebe">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bebe"/>
           </Properties>
@@ -224,19 +224,19 @@
             <Property name="text" type="java.lang.String" value="Nota:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtNota">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="text" type="java.lang.String" value="Estado De Invitacion:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton3">
+        <Component class="javax.swing.JRadioButton" name="rbEnviada">
           <Properties>
             <Property name="text" type="java.lang.String" value="Invitacion Enviada"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton4">
+        <Component class="javax.swing.JRadioButton" name="rbNoEnviada">
           <Properties>
             <Property name="text" type="java.lang.String" value="Invitacion No Enviada"/>
           </Properties>
@@ -266,9 +266,9 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextField2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTextField3" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jTextField4" max="32767" attributes="0"/>
+                              <Component id="txtTelefono" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCorreo" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDireccion" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -289,17 +289,17 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDireccion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -330,21 +330,21 @@
             <Property name="text" type="java.lang.String" value="Telefono:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="txtTelefono">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
             <Property name="text" type="java.lang.String" value="Correo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="txtCorreo">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
             <Property name="text" type="java.lang.String" value="Direccion:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="txtDireccion">
         </Component>
       </SubComponents>
     </Container>

@@ -21,6 +21,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="0" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="RegistroLogin"/>
               </Properties>
               <Events>
@@ -45,6 +48,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
               <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="33" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Asistencia"/>
               </Properties>
               <Events>
@@ -53,6 +59,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
               <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="33" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="RegistrarInvitado"/>
               </Properties>
               <Events>
@@ -69,6 +78,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
               <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="99" red="ff" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Presupuesto"/>
               </Properties>
               <Events>
@@ -89,6 +101,17 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem9ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="33" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Lista Presupuestos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem10ActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

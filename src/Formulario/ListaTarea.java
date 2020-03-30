@@ -5,17 +5,120 @@
  */
 package Formulario;
 
+import Conectar.Conectar;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author TAMY-IA
  */
 public class ListaTarea extends javax.swing.JInternalFrame {
 
+    DefaultTableModel model;
     /**
      * Creates new form ListaTarea
      */
     public ListaTarea() {
         initComponents();
+        CargarTarea("");
+        CargarSubTarea("");
+    }
+    
+    void CargarTarea(String valor){
+        try{
+            String[] titulos={"Nombre","Categoria","Nota","Estado","Fecha"};
+            String[] registros=new String[5];
+            model=new DefaultTableModel(null, titulos);
+            
+            String consulta="SELECT * FROM tareas WHERE CONCAT (`idtareas`, `nombre`, `categoria`, `nota`, `estado`, `fecha`) LIKE '%"+valor+"%'";
+            
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(consulta);
+            
+            while(rs.next()){
+                registros[0]=rs.getString(2);
+                registros[1]=rs.getString(3);
+                registros[2]=rs.getString(4);
+                registros[3]=rs.getString(5);
+                registros[4]=rs.getString(6);
+                
+                model.addRow(registros);
+            }
+            
+            tbTareas.setModel(model);
+            
+        }catch(Exception e){
+            System.out.println("Error Metodo CargarTarea\n"+e);
+        }
+    }
+    
+    void CargarSubTarea(String valor){
+        try{
+            String[] titulos={"Nombre", "Nota", "Estado"};
+            String[] registros=new String[3];
+            model=new DefaultTableModel(null, titulos);
+            String cons="SELECT * FROM subtareas WHERE CONCAT (`idSubtareas`, `nombre`, `nota`, `estado`) LIKE '%"+valor+"%'";
+            
+            Statement st = cn.createStatement();
+            ResultSet rs=st.executeQuery(cons);
+            
+            while(rs.next()){
+                registros[0]=rs.getString(2);
+                registros[1]=rs.getString(3);
+                registros[2]=rs.getString(4);
+                
+                model.addRow(registros);
+            }
+            
+            tbSubTareas.setModel(model);
+            
+        }catch(Exception e){
+            System.out.println("Error al cargar subtareas\n"+e);
+        }
+    }
+    
+    void ModificarTarea(){
+        int fila = tbTareas.getSelectedRow();
+	
+        try {
+
+            String nombre="",categoria="",nota="",estado="",fecha="";
+
+           if(fila==-1){
+               JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna tarea");
+           }else{
+               
+               NuevaTarea nt=new NuevaTarea();
+               Principal.jdpEscritorio.add(nt);
+               nt.setVisible(true);
+        
+               nombre =  (String)tbTareas.getValueAt(fila, 0).toString();
+               categoria =  (String)tbTareas.getValueAt(fila, 1).toString();
+               nota =  (String)tbTareas.getValueAt(fila, 2).toString();
+               estado =  (String)tbTareas.getValueAt(fila, 3).toString();
+               fecha=(String)tbTareas.getValueAt(fila, 4).toString();
+               
+               NuevaTarea.txtNewNombre.setText(nombre);
+               NuevaTarea.jcbNewCategoria.setSelectedItem(categoria);
+               NuevaTarea.txtNewNota.setText(nota);
+               if(estado.equals("Pendiente")){
+                   NuevaTarea.rbNewPendiente.setSelected(true);
+               }else if(estado.equals("Completo")){
+                   NuevaTarea.rbNewCompleto.setSelected(true);
+               }
+               //NuevaTarea.jcNewFecha.setDate(date);////////////////NO SE COMO HACERLO
+               nt.DesbloquearTarea();
+
+            this.dispose();
+
+           }
+       }catch (Exception e) {
+           System.out.println("Error aol enviar datos\n"+e);
+       }
     }
 
     /**
@@ -29,12 +132,12 @@ public class ListaTarea extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbTareas = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbSubTareas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnNueva = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -42,20 +145,20 @@ public class ListaTarea extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbTareas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Categoria", "Nota", "Fecha"
+                "Nombre", "Categoria", "Nota", "", "Fecha"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbTareas);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbSubTareas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -66,7 +169,7 @@ public class ListaTarea extends javax.swing.JInternalFrame {
                 "Nombre", "Nota", "Estado"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbSubTareas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,8 +194,15 @@ public class ListaTarea extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Modificar");
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
+        jButton3.setBackground(new java.awt.Color(0, 204, 0));
+        jButton3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton3.setText("Completada");
 
         jButton4.setText("Eliminar");
@@ -100,6 +210,11 @@ public class ListaTarea extends javax.swing.JInternalFrame {
         jLabel1.setText("Logo");
 
         jButton5.setText("Nueva SubTarea");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -110,7 +225,7 @@ public class ListaTarea extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNueva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
@@ -124,7 +239,7 @@ public class ListaTarea extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnModificar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
                 .addGap(29, 29, 29)
@@ -164,20 +279,28 @@ public class ListaTarea extends javax.swing.JInternalFrame {
         Principal.jdpEscritorio.add(nt);
         nt.toFront();
         nt.setVisible(true);
-        
-        /*
-        ProductosB pro= new ProductosB();
-        Principal.jdpescritorio.add(pro);
-        pro.toFront();
-        pro.setVisible(true);
-        */
-        
+        nt.DesbloquearTarea();
+       
     }//GEN-LAST:event_btnNuevaActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        NuevaTarea nsb = new NuevaTarea();
+        Principal.jdpEscritorio.add(nsb);
+        nsb.toFront();
+        nsb.setVisible(true);
+        nsb.DesbloquearSubtarea();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        ModificarTarea();
+    }//GEN-LAST:event_btnModificarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNueva;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -186,7 +309,10 @@ public class ListaTarea extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbSubTareas;
+    private javax.swing.JTable tbTareas;
     // End of variables declaration//GEN-END:variables
+    
+    Conectar cc=new Conectar();
+    Connection cn=cc.conexion();
 }

@@ -25,21 +25,48 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
     
     void Validar(){
         Guardar();
-    }
+    }   //INCOMPLETO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     void Guardar(){
-        String id="0";
+        String id="0", genero="", x="", invitacion="";
         String nulo="";
         ////////    ✓   ///////////<------PALOMITA
-        String consulta="INSERT INTO Registro_Invitados (`idRegistroInvitados`, `nombre`, `relacion`, `mesa`, `asistencia`)VALUES(?,?,?,?,?)";
+        String consulta="INSERT INTO asistencia_invitado (`idAsistencia_Invitado`, `nombre`, `genero`, `grupo`, `nota`, `invitacion`, `relacion`, `mesa`, `telcel`, `correo`, `direccion`, `asistencia`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        
+        if(rbMasculino.isSelected()==true){
+            genero="Masculino";
+        }else if(rbFemenino.isSelected()==true){
+            genero="Femenino";
+        }
+        ////////////////////////////////////////////
+        if(cbAdulto.isSelected()==true){
+            x="Adulto";
+        }else if(cbNiño.isSelected()==true){
+            x="Niño";
+        }else if(cbBebe.isSelected()==true){
+            x="Bebe";
+        }
+        /////////////////////////////////////////////
+        if(rbEnviada.isSelected()==true){
+            invitacion="Invitacion Enviada";
+        }else if(rbNoEnviada.isSelected()==true){
+            invitacion="Invitacion No Enviada";
+        }
         
         try{
             PreparedStatement pst=cn.prepareStatement(consulta);
             pst.setString(1, id);
             pst.setString(2, txtNombre.getText());
-            pst.setString(3, txtRelacion.getText());
-            pst.setString(4, txtMesa.getText());
-            pst.setString(5, " ");
+            pst.setString(3, genero);
+            pst.setString(4, x);
+            pst.setString(5, txtNota.getText());
+            pst.setString(6, invitacion);
+            pst.setString(7, txtRelacion.getText());
+            pst.setString(8, txtMesa.getText());
+            pst.setString(9, txtTelefono.getText());
+            pst.setString(10, txtCorreo.getText());
+            pst.setString(11, txtDireccion.getText());
+            pst.setString(12, nulo);
             
             pst.executeUpdate();
             Limpiar();
@@ -51,8 +78,20 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
     
     void Limpiar(){
         txtNombre.setText("");
+        rbMasculino.setSelected(false);
+        rbFemenino.setSelected(false);
+        cbAdulto.setSelected(false);
+        cbNiño.setSelected(false);
+        cbBebe.setSelected(false);
+        txtNota.setText("");
+        rbEnviada.setSelected(false);
+        rbNoEnviada.setSelected(false);
         txtRelacion.setText("");
         txtMesa.setText("");
+        
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+        txtDireccion.setText("");
     }
 
     /**
@@ -73,25 +112,25 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
         txtMesa = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        rbMasculino = new javax.swing.JRadioButton();
+        rbFemenino = new javax.swing.JRadioButton();
+        cbAdulto = new javax.swing.JCheckBox();
+        cbNiño = new javax.swing.JCheckBox();
+        cbBebe = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNota = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        rbEnviada = new javax.swing.JRadioButton();
+        rbNoEnviada = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Nuevo Invitado");
@@ -107,23 +146,23 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Genero:");
 
-        jRadioButton1.setText("Masculino");
+        rbMasculino.setText("Masculino");
 
-        jRadioButton2.setText("Femenino");
+        rbFemenino.setText("Femenino");
 
-        jCheckBox1.setText("Adulto");
+        cbAdulto.setText("Adulto");
 
-        jCheckBox2.setText("Niño");
+        cbNiño.setText("Niño");
 
-        jCheckBox3.setText("Bebe");
+        cbBebe.setText("Bebe");
 
         jLabel6.setText("Nota:");
 
         jLabel7.setText("Estado De Invitacion:");
 
-        jRadioButton3.setText("Invitacion Enviada");
+        rbEnviada.setText("Invitacion Enviada");
 
-        jRadioButton4.setText("Invitacion No Enviada");
+        rbNoEnviada.setText("Invitacion No Enviada");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,9 +174,9 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton3)
+                        .addComponent(rbEnviada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                        .addComponent(jRadioButton4))
+                        .addComponent(rbNoEnviada))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -145,21 +184,21 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
                             .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
+                            .addComponent(txtNota)
                             .addComponent(txtNombre)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(21, 21, 21)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBox1)
+                                        .addComponent(cbAdulto)
                                         .addGap(77, 77, 77)
-                                        .addComponent(jCheckBox2)
+                                        .addComponent(cbNiño)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jCheckBox3))
+                                        .addComponent(cbBebe))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jRadioButton1)
+                                        .addComponent(rbMasculino)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jRadioButton2)
+                                        .addComponent(rbFemenino)
                                         .addGap(52, 52, 52))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,22 +225,22 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(rbMasculino)
+                    .addComponent(rbFemenino))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3))
+                    .addComponent(cbAdulto)
+                    .addComponent(cbNiño)
+                    .addComponent(cbBebe))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jRadioButton4))
+                    .addComponent(rbEnviada)
+                    .addComponent(rbNoEnviada))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -244,9 +283,9 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4))
+                            .addComponent(txtTelefono)
+                            .addComponent(txtCorreo)
+                            .addComponent(txtDireccion))
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(115, 115, 115)
@@ -261,15 +300,15 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -310,9 +349,9 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox cbAdulto;
+    private javax.swing.JCheckBox cbBebe;
+    private javax.swing.JCheckBox cbNiño;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -325,17 +364,17 @@ public class RegistrarInvitados extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JRadioButton rbEnviada;
+    private javax.swing.JRadioButton rbFemenino;
+    private javax.swing.JRadioButton rbMasculino;
+    private javax.swing.JRadioButton rbNoEnviada;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtMesa;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNota;
     private javax.swing.JTextField txtRelacion;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
     Conectar cc=new Conectar();
     Connection cn=cc.conexion();

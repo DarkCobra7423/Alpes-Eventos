@@ -31,10 +31,10 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
     void CargarLista(String valor){
         try{
             String[] titulos={"Id","Nombre","Relacion","Mesa","Asistencia"};
-            String[] registros=new String[6];
+            String[] registros=new String[5];
             model=new DefaultTableModel(null, titulos);
             
-            String consulta="SELECT * FROM `Registro_Invitados` WHERE CONCAT (`idRegistroInvitados`,'', `nombre`,'', `relacion`,'', `mesa`,'', `asistencia`) LIKE '%"+valor+"%'";
+            String consulta="SELECT * FROM `Asistencia_Invitado` WHERE CONCAT (`idAsistencia_Invitado`,'', `nombre`,'', `relacion`,'', `mesa`,'', `asistencia`) LIKE '%"+valor+"%'";
             
             Statement st = cn.createStatement(); 
             ResultSet rs=st.executeQuery(consulta);
@@ -42,9 +42,9 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
             while(rs.next()){
                 registros[0]=rs.getString(1);
                 registros[1]=rs.getString(2);
-                registros[2]=rs.getString(3);
-                registros[3]=rs.getString(4);
-                registros[4]=rs.getString(5);
+                registros[2]=rs.getString(7);
+                registros[3]=rs.getString(8);
+                registros[4]=rs.getString(12);
                 
                 model.addRow(registros);
             }
@@ -61,30 +61,6 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
         }
     }
     
-    void Asistencia(){
-        //String asistencia="✓",noasistencia="";
-        int filase1=tbInvitados.getSelectedRow();
-        
-        try{
-            if(filase1==1){
-                JOptionPane.showMessageDialog(null, "Por favor seleccione un invitado");
-            }else{
-                String cod=(String)tbInvitados.getValueAt(filase1, 0);
-                String con="UPDATE `Registro_Invitados` SET `asistencia` = '✓' WHERE `Registro_Invitados`.`idRegistroInvitados` ='"+cod+"'";
-        
-                try{
-                    PreparedStatement pst=cn.prepareStatement(con);
-                    pst.executeUpdate();
-                    CargarLista("");
-                }catch(Exception ex){
-                    JOptionPane.showMessageDialog(null, "Error al colocar la asistencia\n"+ex);
-                }
-            }
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "Error al asistir\n"+ex);
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -237,7 +213,32 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
 
     private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed
         // TODO add your handling code here:
-        Asistencia();
+        String asistir="✓";
+        int filase1=tbInvitados.getSelectedRow();
+       
+        try{
+            if(filase1==-1){
+                JOptionPane.showMessageDialog(null, "Por favor seleccione un invitado");
+               
+            }else{
+                String codigo=(String)tbInvitados.getValueAt(filase1, 0);
+                //String con="UPDATE `Asistencia_Invitado` SET `asistencia` = '✓' WHERE `idAsistencia_Invitado` ='"+codigo+"'";
+                String sql="UPDATE Asistencia_Invitado SET `asistencia`='"+asistir+"' WHERE `idAsistencia_Invitado`='"+codigo+"'";
+                System.out.println("Funciona3>>>>> "+codigo+" "+asistir);
+                try{
+                    PreparedStatement pst = cn.prepareStatement(sql);
+                    pst.executeUpdate();
+                    //JOptionPane.showMessageDialog(null, "Actualizado");
+                   System.out.println("Funciona3>>>>> "+sql);
+                   CargarLista("");
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, "Error al realizar el pago\n"+ex);
+                }
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error al asistir\n"+ex);
+        }
+        
     }//GEN-LAST:event_btnAsistenciaActionPerformed
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased

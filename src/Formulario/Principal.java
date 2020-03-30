@@ -114,6 +114,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,6 +158,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.setText("Aqui esta todo");
 
+        jMenuItem1.setForeground(new java.awt.Color(0, 255, 0));
         jMenuItem1.setText("RegistroLogin");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,6 +183,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
+        jMenuItem4.setForeground(new java.awt.Color(51, 255, 0));
         jMenuItem4.setText("Asistencia");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +192,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem4);
 
+        jMenuItem5.setForeground(new java.awt.Color(51, 255, 0));
         jMenuItem5.setText("RegistrarInvitado");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,6 +209,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem6);
 
+        jMenuItem7.setForeground(new java.awt.Color(255, 153, 0));
         jMenuItem7.setText("Presupuesto");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,6 +233,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem9);
+
+        jMenuItem10.setForeground(new java.awt.Color(51, 255, 0));
+        jMenuItem10.setText("Lista Presupuestos");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem10);
 
         jMenuBar1.add(jMenu3);
 
@@ -310,6 +324,13 @@ public class Principal extends javax.swing.JFrame {
         tp.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        ListaPresupuesto lp=new ListaPresupuesto();
+        jdpEscritorio.add(lp);
+        lp.setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -352,6 +373,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
