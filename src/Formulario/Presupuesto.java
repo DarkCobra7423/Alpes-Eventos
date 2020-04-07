@@ -6,7 +6,6 @@
 package Formulario;
 
 import Conectar.Conectar;
-import static java.lang.Thread.sleep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +31,7 @@ public class Presupuesto extends javax.swing.JInternalFrame {
      */
     public Presupuesto() {
         initComponents();
+        this.setLocation(440, 100);
         Folio();
         PanelPagoDesactivado();
         

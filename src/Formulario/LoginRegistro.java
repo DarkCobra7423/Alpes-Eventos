@@ -24,6 +24,7 @@ public class LoginRegistro extends javax.swing.JInternalFrame {
      */
     public LoginRegistro() {
         initComponents();
+        this.setLocation(700, 50);
     }
     
     void ValidarDatos(){

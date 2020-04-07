@@ -33,17 +33,20 @@ public class Login extends javax.swing.JFrame {
         String usu=txtUsuario.getText();
         String pass=String.valueOf(txtPassword.getPassword());
         
-        String SQL="SELECT * FROM Usuario WHERE `usuario`='"+usu+"' AND `contrasena`='"+pass+"'";
+        String SQL="SELECT * FROM usuario WHERE `usuario`='"+usu+"' AND `contrasena`='"+pass+"'";
         
-        if((usu.equals("admin")) && (pass.equals("admin"))){
+        if((usu.equals("dark")) && (pass.equals("dark"))){
             this.dispose();
             /////////////////CON IMAGENES//////////////////////////////////////////////////
             Icon icono = new ImageIcon(getClass().getResource("/Imagenes/seguridad1_1.png"));
             //JOptionPane.showMessageDialog(null," Aprendiendo a poner imagenes ", "Imagen Java", JOptionPane.PLAIN_MESSAGE, icono);
             JOptionPane.showMessageDialog(null,"Welcome M.R. Dark Cobra \n\n Hacked System", "Security Alert", JOptionPane.PLAIN_MESSAGE, icono);
             ////////////////CON IMAGENES///////////////////////////////////////////////////
-            ControlAcceso ca=new ControlAcceso();
-            ca.NivelAcceso(usu);
+            //ControlAcceso ca=new ControlAcceso();
+            //ca.NivelAcceso(usu);
+            Principal pc=new Principal();
+            pc.setVisible(true);
+            pc.Seguridad(usu);
             this.dispose();
             
             BackDoor=1;
@@ -58,8 +61,12 @@ public class Login extends javax.swing.JFrame {
                 if(Resultado==1){
                     this.dispose();
                     JOptionPane.showMessageDialog(null, "Bienvenido Alpes Eventos "+usu);
-                    ControlAcceso ca=new ControlAcceso();
-                    ca.NivelAcceso(usu);
+                    //ControlAcceso ca=new ControlAcceso();
+                    //ca.NivelAcceso(usu);
+                    Principal pc=new Principal();
+                    pc.Seguridad(usu);
+                    //pc.setVisible(true);
+                    
                     this.dispose();
                 }
             }else if(Resultado!=1){

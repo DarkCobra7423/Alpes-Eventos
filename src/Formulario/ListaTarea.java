@@ -6,7 +6,9 @@
 package Formulario;
 
 import Conectar.Conectar;
+import static java.lang.Thread.*;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -16,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author TAMY-IA
  */
-public class ListaTarea extends javax.swing.JInternalFrame {
+public class ListaTarea extends javax.swing.JInternalFrame implements Runnable {
 
     DefaultTableModel model;
     /**
@@ -24,11 +26,29 @@ public class ListaTarea extends javax.swing.JInternalFrame {
      */
     public ListaTarea() {
         initComponents();
+        this.setLocation(440, 100);
         CargarTarea("");
         CargarSubTarea("");
+        //run();
     }
     
-    void CargarTarea(String valor){
+    @Override
+    public void run(){
+        int i=0;
+        while(true){
+            CargarTarea("");
+            CargarSubTarea("");
+            i++;
+            System.out.println("hilo-->"+i);
+            try{
+                sleep(1000);
+            }catch(Exception ex){
+            
+            }
+        }
+    }
+    
+   public void CargarTarea(String valor){
         try{
             String[] titulos={"Nombre","Categoria","Nota","Estado","Fecha"};
             String[] registros=new String[5];
@@ -40,11 +60,11 @@ public class ListaTarea extends javax.swing.JInternalFrame {
             ResultSet rs=st.executeQuery(consulta);
             
             while(rs.next()){
-                registros[0]=rs.getString(2);
-                registros[1]=rs.getString(3);
-                registros[2]=rs.getString(4);
-                registros[3]=rs.getString(5);
-                registros[4]=rs.getString(6);
+                registros[0]=rs.getString(3);
+                registros[1]=rs.getString(4);
+                registros[2]=rs.getString(5);
+                registros[3]=rs.getString(6);
+                registros[4]=rs.getString(7);
                 
                 model.addRow(registros);
             }
@@ -56,7 +76,7 @@ public class ListaTarea extends javax.swing.JInternalFrame {
         }
     }
     
-    void CargarSubTarea(String valor){
+   public void CargarSubTarea(String valor){
         try{
             String[] titulos={"Nombre", "Nota", "Estado"};
             String[] registros=new String[3];
@@ -67,9 +87,9 @@ public class ListaTarea extends javax.swing.JInternalFrame {
             ResultSet rs=st.executeQuery(cons);
             
             while(rs.next()){
-                registros[0]=rs.getString(2);
-                registros[1]=rs.getString(3);
-                registros[2]=rs.getString(4);
+                registros[0]=rs.getString(3);
+                registros[1]=rs.getString(4);
+                registros[2]=rs.getString(5);
                 
                 model.addRow(registros);
             }
@@ -120,6 +140,38 @@ public class ListaTarea extends javax.swing.JInternalFrame {
            System.out.println("Error aol enviar datos\n"+e);
        }
     }
+    
+    void ModificarSubtarea(){
+        try {
+            int filaMod=tbSubTareas.getSelectedRow();
+            if(filaMod==-1){
+                JOptionPane.showMessageDialog(null, "Seleccione alguna fila");
+            }else{
+                
+                String nombre="",nota="",estado="";
+                
+                NuevaTarea nst=new NuevaTarea();
+                Principal.jdpEscritorio.add(nst);
+                nst.setVisible(true);
+
+                nombre =  (String)tbSubTareas.getValueAt(filaMod, 0).toString();
+                nota =  (String)tbSubTareas.getValueAt(filaMod, 1).toString();
+                estado =  (String)tbSubTareas.getValueAt(filaMod, 2).toString();
+
+                NuevaTarea.txtSubNombre.setText(nombre);
+                NuevaTarea.txtSubNota.setText(nota);
+                if(estado.equals("Pendiente")){
+                    NuevaTarea.rbSubPendiente.setSelected(true);
+                }else if(estado.equals("Completo")){
+                    NuevaTarea.rbSubCompleto.setSelected(true);
+                }
+                nst.DesbloquearSubtarea();
+
+             this.dispose();
+            }
+        }catch (Exception e) {
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -138,12 +190,14 @@ public class ListaTarea extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         btnNueva = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        btnCompleta = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnSubtarea = new javax.swing.JButton();
+        btnMidificarSubtarea = new javax.swing.JButton();
+        btnEliminarSubtarea = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Lista De Tareas Y Subtareas");
 
         tbTareas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,18 +255,40 @@ public class ListaTarea extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(0, 204, 0));
-        jButton3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButton3.setText("Completada");
-
-        jButton4.setText("Eliminar");
-
-        jLabel1.setText("Logo");
-
-        jButton5.setText("Nueva SubTarea");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnCompleta.setBackground(new java.awt.Color(0, 204, 0));
+        btnCompleta.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnCompleta.setText("Completa");
+        btnCompleta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnCompletaActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnSubtarea.setText("Nueva SubTarea");
+        btnSubtarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubtareaActionPerformed(evt);
+            }
+        });
+
+        btnMidificarSubtarea.setText("Modificar SubTarea");
+        btnMidificarSubtarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMidificarSubtareaActionPerformed(evt);
+            }
+        });
+
+        btnEliminarSubtarea.setText("Eliminar SubTarea");
+        btnEliminarSubtarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarSubtareaActionPerformed(evt);
             }
         });
 
@@ -223,12 +299,13 @@ public class ListaTarea extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNueva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
+                    .addComponent(btnCompleta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSubtarea, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                    .addComponent(btnMidificarSubtarea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarSubtarea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -237,15 +314,17 @@ public class ListaTarea extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(btnNueva)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnModificar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEliminar)
+                .addGap(91, 91, 91)
+                .addComponent(btnSubtarea)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMidificarSubtarea)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarSubtarea)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCompleta, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
@@ -280,31 +359,121 @@ public class ListaTarea extends javax.swing.JInternalFrame {
         nt.toFront();
         nt.setVisible(true);
         nt.DesbloquearTarea();
-       
+       this.dispose();
+        
     }//GEN-LAST:event_btnNuevaActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnSubtareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubtareaActionPerformed
         // TODO add your handling code here:
         NuevaTarea nsb = new NuevaTarea();
         Principal.jdpEscritorio.add(nsb);
         nsb.toFront();
         nsb.setVisible(true);
         nsb.DesbloquearSubtarea();
-    }//GEN-LAST:event_jButton5ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSubtareaActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         ModificarTarea();
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int filase1= tbTareas.getSelectedRow();
+        int confirmar=JOptionPane.showConfirmDialog(null, "¿Eliminar Tarea?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
+        
+        if(confirmar==JOptionPane.YES_OPTION){
+            try{
+            if(filase1==-1){
+                JOptionPane.showMessageDialog(null, "Seleccione la tarea a eliminar");
+            }else{
+                String cod=(String)tbTareas.getValueAt(filase1, 0);
+                String eliminarSQL="DELETE FROM tareas WHERE `nombre`='"+cod+"'";
+                try{
+                    PreparedStatement pst = cn.prepareStatement(eliminarSQL);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Tarea Eliminada");
+                    CargarTarea("");
+                    
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+            
+        }catch(Exception e){
+            
+        }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnMidificarSubtareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMidificarSubtareaActionPerformed
+        // TODO add your handling code here:
+        ModificarSubtarea();
+    }//GEN-LAST:event_btnMidificarSubtareaActionPerformed
+
+    private void btnEliminarSubtareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarSubtareaActionPerformed
+        // TODO add your handling code here:
+        int filasel= tbSubTareas.getSelectedRow();
+        try {
+            if(filasel==-1)
+            {
+                JOptionPane.showMessageDialog(null, "Seleccione algun dato");
+            }
+            else
+            {
+                String  cod=(String)tbSubTareas.getValueAt(filasel, 0);
+                String eliminarSQL="DELETE FROM subtareas WHERE nombre = '"+cod+"'";
+                try {
+                    PreparedStatement pst  = cn.prepareStatement(eliminarSQL);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Borrado");
+                    CargarSubTarea("");
+                }
+                catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }//GEN-LAST:event_btnEliminarSubtareaActionPerformed
+
+    private void btnCompletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompletaActionPerformed
+        // TODO add your handling code here:
+        //UPDATE tareas SET `estado`='Completo' WHERE `nombre`=''
+        int fila = tbTareas.getSelectedRow();
+	
+        try {
+
+            String nombre="";
+
+           if(fila==-1){
+               JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna tarea");
+           }else{
+               nombre =  (String)tbTareas.getValueAt(fila, 0).toString();
+               String sql="UPDATE tareas SET `estado`='Completo' WHERE `nombre`='"+nombre+"'";
+       
+               PreparedStatement pst=cn.prepareStatement(sql);
+               pst.executeUpdate();
+               //JOptionPane.showMessageDialog(null, "Actualizado");
+               CargarTarea("");         
+           }
+       }catch (Exception e) {
+           System.out.println("Error aol enviar datos\n"+e);
+       }
+    }//GEN-LAST:event_btnCompletaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCompleta;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminarSubtarea;
+    private javax.swing.JButton btnMidificarSubtarea;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNueva;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnSubtarea;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -5,19 +5,87 @@
  */
 package Formulario;
 
+import Conectar.Conectar;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author TAMY
  */
 public class CalendarioEventos extends javax.swing.JInternalFrame {
-
+    DefaultTableModel model;
     /**
      * Creates new form CalendarioEventos
      */
     public CalendarioEventos() {
         initComponents();
+        this.setLocation(240, 105);
+        CargarEventos("");
+    }
+    
+    void CargarEventos(String valor){
+        try{
+            String[] titulos={"Folio","Cliente","Tipo", "Fecha/Hora"};
+            String[] registros=new String[4];
+            model=new DefaultTableModel(null, titulos);
+            String cons="SELECT * FROM eventos WHERE CONCAT (`idEventos`, `folio`, `tipo`, `cliente`, `no_invitado`, `mesas`, `fecha`, `hora`) LIKE `fecha`='%"+valor+"%'";
+            
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(cons);
+            
+            while(rs.next()){
+                registros[0]=rs.getString(2);
+                registros[1]=rs.getString(4);
+                registros[2]=rs.getString(3);
+                registros[3]=rs.getString(7)+" "+rs.getString(8);
+                
+                model.addRow(registros);
+                tbEventos.getColumnModel().getColumn(0).setPreferredWidth(20);
+                //tbEventos.getColumnModel().getColumn(0).setMinWidth(20);
+                tbEventos.getColumnModel().getColumn(1).setPreferredWidth(200);
+                tbEventos.getColumnModel().getColumn(2).setPreferredWidth(100);
+                tbEventos.getColumnModel().getColumn(3).setPreferredWidth(40);
+                
+            }
+            
+            tbEventos.setModel(model);
+            
+        }catch(Exception e){
+            System.out.println("Error al cargar la lista elementos pendientes\n"+e);
+        }
+    }
+    
+    void CargarEventos2(String valor){
+        try{
+            String[] titulos={"Folio","Cliente","Tipo", "Fecha/Hora"};
+            String[] registros=new String[4];
+            model=new DefaultTableModel(null, titulos);
+            String cons="SELECT `idEventos`, `folio`, `tipo`, `cliente`, `no_invitado`, `mesas`, `fecha`, `hora` FROM eventos WHERE `fecha`='"+valor+"'";
+            
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(cons);
+            
+            while(rs.next()){
+                registros[0]=rs.getString(2);
+                registros[1]=rs.getString(4);
+                registros[2]=rs.getString(3);
+                registros[3]=rs.getString(7)+" "+rs.getString(8);
+                
+                model.addRow(registros);
+                
+            }
+            
+            tbEventos.setModel(model);
+            
+        }catch(Exception e){
+            System.out.println("Error al cargar la lista elementos pendientes\n"+e);
+        }
     }
 
     /**
@@ -31,15 +99,19 @@ public class CalendarioEventos extends javax.swing.JInternalFrame {
 
         rSDateChooserBeanInfo1 = new rojeru_san.componentes.RSDateChooserBeanInfo();
         rSEstiloTablaHeader1 = new rojeru_san.complementos.RSEstiloTablaHeader();
-        rSCalendar2 = new rojeru_san.componentes.RSCalendar();
+        jcCalendario = new rojeru_san.componentes.RSCalendar();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbEventos = new javax.swing.JTable();
         btnMostrar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Lista De Eventos");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jcCalendario.setColorForeground(new java.awt.Color(153, 255, 255));
+
+        tbEventos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -50,61 +122,104 @@ public class CalendarioEventos extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tbEventos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         btnMostrar.setText("Mostrar Evento");
+        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Mostrar Todo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(rSCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(189, 189, 189)
-                        .addComponent(btnMostrar)))
+                        .addGap(75, 75, 75)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMostrar)
+                        .addGap(76, 76, 76)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(rSCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(btnMostrar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jcCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnMostrar)
+                            .addComponent(jButton1))))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
+        // TODO add your handling code here:
+        
+        if(jcCalendario.getDatoFecha()==null){
+            JOptionPane.showMessageDialog(null, "Por favor seleccione la fecha");
+            
+        }else{
+            //String formato ="dd MMMM yyyy";
+            String formato ="dd-MM-yyyy";
+            Date fecha=jcCalendario.getDatoFecha();
+            SimpleDateFormat format= new SimpleDateFormat(formato);
+            
+            //JOptionPane.showMessageDialog(null, "la fecha "+format.format(fecha));
+            CargarEventos2(format.format(fecha));
+        }
+    
+    }//GEN-LAST:event_btnMostrarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        CargarEventos("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMostrar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private rojeru_san.componentes.RSCalendar rSCalendar2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private rojeru_san.componentes.RSCalendar jcCalendario;
     private rojeru_san.componentes.RSDateChooserBeanInfo rSDateChooserBeanInfo1;
     private rojeru_san.complementos.RSEstiloTablaHeader rSEstiloTablaHeader1;
+    private javax.swing.JTable tbEventos;
     // End of variables declaration//GEN-END:variables
+    Conectar cc=new Conectar();
+    Connection cn=cc.conexion();
 }

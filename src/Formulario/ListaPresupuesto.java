@@ -25,6 +25,7 @@ public class ListaPresupuesto extends javax.swing.JInternalFrame {
      */
     public ListaPresupuesto() {
         initComponents();
+        this.setLocation(440, 100);
         Cargar("");
     }
     
@@ -179,19 +180,19 @@ public class ListaPresupuesto extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         int filase1= tbListaPresupuesto.getSelectedRow();
-        int confirmar=JOptionPane.showConfirmDialog(null, "¿Eliminar Producto?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
+        int confirmar=JOptionPane.showConfirmDialog(null, "¿Eliminar Presupuesto?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
         
         if(confirmar==JOptionPane.YES_OPTION){
             try{
             if(filase1==-1){
-                JOptionPane.showMessageDialog(null, "Seleccione el producto a eliminar");
+                JOptionPane.showMessageDialog(null, "Seleccione el presupuesto a eliminar");
             }else{
                 String cod=(String)tbListaPresupuesto.getValueAt(filase1, 0);
                 String eliminarSQL="DELETE FROM Presupuesto WHERE folio='"+cod+"'";
                 try{
                     PreparedStatement pst = cn.prepareStatement(eliminarSQL);
                     pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Producto Eliminado");
+                    JOptionPane.showMessageDialog(null, "Presupuesto Eliminado");
                     Cargar("");
                     
                 }catch(Exception e){

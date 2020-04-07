@@ -26,8 +26,8 @@ public class Conectar {
             String pass="QWERTY12345c";
             
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conect = DriverManager.getConnection("jdbc:mysql://" + url + "/" + bd, usu, pass);
-            //conect = DriverManager.getConnection("jdbc:mysql://" + "localhost" + "/" + bd, "root", "");
+            //conect = DriverManager.getConnection("jdbc:mysql://" + url + "/" + bd, usu, pass);
+            conect = DriverManager.getConnection("jdbc:mysql://" + "localhost" + "/" + bd, "root", "");
             System.out.println("Connection established!");
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, "Base de datos Alpes_Eventos no encontrada \n"+ex);

@@ -24,6 +24,7 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
      */
     public RegistroEventos() {
         initComponents();
+        this.setLocation(500, 100);
     }
     
     void Validar(){//INCOMPLETO NO FUNCIONA LA CONDICION
@@ -39,11 +40,11 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
     void Registrar(){   //COMPLETO
         System.out.println("Funciona en else2");
         
-        String id="0";
-        String nulo="0";
-        String nulo1="false";
+        String id="0", folio=Principal.jlFolio.getText();
+        //String nulo="0";
+        //String nulo1="false";
         
-        String consulta="INSERT INTO Registro_Eventos (`idRegistroEventos`, `tipo`, `cliente`, `no_invitado`, `no_mesa`, `fecha`, `hora`,`invitados_mesa`, `dividir_mesa`)VALUES(?,?,?,?,?,?,?,?,?)";
+        String consulta="INSERT INTO eventos (`idEventos`, `folio`, `tipo`, `cliente`, `no_invitado`, `mesas`, `fecha`, `hora`)VALUES(?,?,?,?,?,?,?,?)";
         
         try{
             //////////////////////////////
@@ -54,17 +55,19 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
             
             PreparedStatement pst = cn.prepareStatement(consulta);
             pst.setString(1, id);
-            pst.setString(2, txtTipo.getText());
-            pst.setString(3, txtCliente.getText());
-            pst.setString(4, txtInvitados.getText());
-            pst.setString(5, txtMesas.getText());
-            pst.setString(6, fecha1);
-            pst.setString(7, txtHora.getText());
-            pst.setString(8, nulo);
-            pst.setString(9, nulo1);
+            pst.setString(2, folio);
+            pst.setString(3, txtTipo.getText());
+            pst.setString(4, txtCliente.getText());
+            pst.setString(5, txtInvitados.getText());
+            pst.setString(6, txtMesas.getText());
+            pst.setString(7, fecha1);
+            pst.setString(8, txtHora.getText());
+            //pst.setString(9, nulo);
+            //pst.setString(10, nulo1);
             
             pst.executeUpdate();
             Limpiar();
+            this.dispose();
             
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, "Error al registrar el evento\n"+ex);
@@ -147,23 +150,27 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addGap(78, 78, 78)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCliente, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtInvitados, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMesas, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtHora, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jdFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addComponent(txtCliente, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtInvitados, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMesas, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtHora, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jdFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton2)
+                        .addGap(44, 44, 44)))
                 .addGap(20, 20, 20))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +222,7 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,6 +253,9 @@ public class RegistroEventos extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         Validar();
+        RegistrarInvitados ri=new RegistrarInvitados();
+        Principal.jdpEscritorio.add(ri);
+        ri.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

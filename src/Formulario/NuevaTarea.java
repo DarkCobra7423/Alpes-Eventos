@@ -8,9 +8,15 @@ package Formulario;
 import Conectar.Conectar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,13 +29,17 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
      */
     public NuevaTarea() {
         initComponents();
+        this.setLocation(440, 100);
         BloquearTarea();
         BloquearSubtarea();
+        Folio();
+        jlFolio.setVisible(false);
+        
     } //COMPLETO
-    
+        
     void NuevaTarea(){
         String id, nombre, categoria, nota, estado="", fecha="";
-        String sql="INSERT INTO tareas (`idtareas`, `nombre`, `categoria`, `nota`, `estado`, `fecha`)VALUES(?,?,?,?,?,?)";
+        String sql="INSERT INTO tareas (`idtareas`,`folio`, `nombre`, `categoria`, `nota`, `estado`, `fecha`)VALUES(?,?,?,?,?,?,?)";
         
         id="0";
         nombre=txtNewNombre.getText();
@@ -53,16 +63,17 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
         try{
             PreparedStatement pst=cn.prepareStatement(sql);
             pst.setString(1, id);
-            pst.setString(2, nombre);
-            pst.setString(3, categoria);
-            pst.setString(4, nota);
-            pst.setString(5, estado);
-            pst.setString(6, fecha);
+            pst.setString(2, jlFolio.getText());
+            pst.setString(3, nombre);
+            pst.setString(4, categoria);
+            pst.setString(5, nota);
+            pst.setString(6, estado);
+            pst.setString(7, fecha);
             
             pst.executeUpdate();
             System.out.println("Guardado");
             Limpiar();
-            
+            this.dispose();
         }catch(Exception e){
             System.out.println("Error metodo nueva tarea\n"+e);
         }
@@ -70,7 +81,7 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
     
     void NuevaSubtarea(){
         String id="0",nombre, nota, estado="";
-        String sql="INSERT INTO subtareas (`idSubtareas`, `nombre`, `nota`, `estado`)VALUES(?,?,?,?)";
+        String sql="INSERT INTO subtareas (`idSubtareas`,`folio`, `nombre`, `nota`, `estado`)VALUES(?,?,?,?,?)";
         
         nombre=txtSubNombre.getText();
         nota=txtSubNota.getText();
@@ -83,14 +94,15 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
         try{
             PreparedStatement pst=cn.prepareStatement(sql);
             pst.setString(1, id);
-            pst.setString(2, nombre);
-            pst.setString(3, nota);
-            pst.setString(4, estado);
+            pst.setString(2, jlFolio.getText());
+            pst.setString(3, nombre);
+            pst.setString(4, nota);
+            pst.setString(5, estado);
             
             pst.executeUpdate();
             System.out.println("SubTarea Guardada");
             Limpiar2();
-            
+            this.dispose();
         }catch(Exception e){
             System.out.println("error metodo subtarea\n"+e);
         }
@@ -155,6 +167,100 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
         btnSubCancelar.setEnabled(true);
         btnSubGuardar.setEnabled(true);
     }
+    
+    void ModificarSubtarea(){
+        //String categoria=String.valueOf(jcbCategoria.getSelectedItem());
+        String estado="";
+        if(rbSubPendiente.isSelected()==true){
+            estado="Pendiente";
+        }else if(rbSubCompleto.isSelected()==true){
+            estado="Completo";
+        }
+        
+        String sql="UPDATE subtareas SET `nombre`='"+txtSubNombre.getText()+"', `nota`='"+txtSubNota.getText()+"', `estado`='"+estado+"' WHERE `nombre`='"+txtSubNombre.getText()+"'";
+        
+        try{
+            PreparedStatement pst=cn.prepareStatement(sql);
+            pst.executeUpdate();
+            //LimpiarPanelPresupuesto();
+            JOptionPane.showMessageDialog(null, "Actualizado");
+            
+            ListaTarea lts=new ListaTarea();
+            Principal.jdpEscritorio.add(lts);
+            lts.setVisible(true);
+                        
+            this.dispose();
+        }catch(Exception e){
+            System.out.println("error al actualizar clase nuevatarea\n"+e);
+        }
+    }
+    
+    void ModificarTarea(){
+        String estado="", categoria=String.valueOf(jcbNewCategoria.getSelectedItem()), fecha="";
+        
+        if(rbNewPendiente.isSelected()==true){
+            estado="Pendiente";
+        }else if(rbNewCompleto.isSelected()==true){
+            estado="Completo";
+        }
+        
+        try{
+            Date fecha1=jcNewFecha.getDate();
+            DateFormat f=new SimpleDateFormat("dd-MM-YYYY");
+            fecha=f.format(fecha1);
+        }catch(Exception e){
+            
+        }  
+        
+        String sql="UPDATE tareas SET `nombre`='"+txtNewNombre.getText()+"', `categoria`='"+categoria+"', `nota`='"+txtNewNota.getText()+"', `estado`='"+estado+"', `fecha`='"+fecha+"' WHERE `nombre`='"+txtNewNombre.getText()+"'";
+        
+        try{
+            PreparedStatement pst=cn.prepareStatement(sql);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Actualizado");
+            //LimpiarPanelPresupuesto();
+            this.dispose();
+            
+            ListaTarea ltt=new ListaTarea();
+            Principal.jdpEscritorio.add(ltt);
+            ltt.setVisible(true);
+            
+        }catch(Exception e){
+            System.out.println("error al actualizar clase nuevatarea\n"+e);
+        }
+    }
+    
+    void Folio(){
+        int j;
+        int cont=1;
+        String num="";
+        String c="";
+         String SQL="SELECT MAX(folio) FROM eventos";
+       
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs=st.executeQuery(SQL);
+            if(rs.next()){              
+                 c=rs.getString(1);
+            }
+            
+            if(c==null){
+                jlFolio.setText("00000001");
+                //jmFolio.setText("Evento: "+"00000001");
+            }
+            else{
+                 j=Integer.parseInt(c);
+                 GenerarNumero gen= new GenerarNumero();
+                 gen.generar(j);
+                 jlFolio.setText(gen.serie());
+                 //jmFolio.setText("Evento: "+gen.serie());
+            }
+            //cn.close();
+        } catch (SQLException ex) {
+            System.out.println("Error en el folio principal \n"+ex);
+           Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -179,6 +285,7 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
         jcNewFecha = new com.toedter.calendar.JDateChooser();
         btnNewCancelar = new javax.swing.JButton();
         btnNewGuardar = new javax.swing.JButton();
+        jlFolio = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -235,6 +342,8 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
             }
         });
 
+        jlFolio.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -254,7 +363,9 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(rbNewPendiente)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(rbNewCompleto)
                                 .addGap(41, 41, 41))
                             .addComponent(txtNewNota)
@@ -270,7 +381,7 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
                         .addComponent(btnNewCancelar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnNewGuardar)
-                        .addGap(39, 39, 39)))
+                        .addGap(48, 48, 48)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -290,7 +401,9 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
                     .addComponent(txtNewNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbNewPendiente, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rbNewPendiente)
+                        .addComponent(jlFolio))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(rbNewCompleto)))
@@ -414,7 +527,7 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -432,17 +545,63 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
 
     private void btnNewGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewGuardarActionPerformed
         // TODO add your handling code here:
-        NuevaTarea();
+        String folio=txtNewNombre.getText();
+        String folio1="";
+        String sql="SELECT * FROM `tareas` WHERE `nombre`='"+folio+"'";
+        
+        try{
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            
+            while(rs.next()){
+                folio1=rs.getString(3);
+            }
+        
+        }catch(Exception e){
+            System.out.println("Funciona la comparacion -->"+e);
+        }
+        
+        if(folio1.equals(folio)){
+            System.out.println("Funciona la comparacion");
+            ModificarTarea();
+        }else{
+            NuevaTarea();
+        }
     }//GEN-LAST:event_btnNewGuardarActionPerformed
 
     private void btnNewCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCancelarActionPerformed
         // TODO add your handling code here:
+        ListaTarea lt=new ListaTarea();
+        Principal.jdpEscritorio.add(lt);
+        lt.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnNewCancelarActionPerformed
 
     private void btnSubGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubGuardarActionPerformed
         // TODO add your handling code here:
-        NuevaSubtarea();
+              
+        String folio=txtSubNombre.getText();
+        String folio1="";
+        String sql="SELECT * FROM `subtareas` WHERE `nombre`='"+folio+"'";
+        
+        try{
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            
+            while(rs.next()){
+                folio1=rs.getString(2);
+            }
+        
+        }catch(Exception e){
+            System.out.println("Funciona la comparacion -->"+e);
+        }
+        
+        if(folio1.equals(folio)){
+            System.out.println("Funciona la comparacion");
+            ModificarSubtarea();
+        }else{
+            NuevaSubtarea();
+        }
     }//GEN-LAST:event_btnSubGuardarActionPerformed
 
     private void rbSubCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSubCompletoActionPerformed
@@ -457,6 +616,9 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
 
     private void btnSubCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubCancelarActionPerformed
         // TODO add your handling code here:
+        ListaTarea lt=new ListaTarea();
+        Principal.jdpEscritorio.add(lt);
+        lt.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSubCancelarActionPerformed
 
@@ -478,14 +640,15 @@ public class NuevaTarea extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     public static com.toedter.calendar.JDateChooser jcNewFecha;
     public static javax.swing.JComboBox<String> jcbNewCategoria;
+    private javax.swing.JLabel jlFolio;
     public static javax.swing.JRadioButton rbNewCompleto;
     public static javax.swing.JRadioButton rbNewPendiente;
-    private javax.swing.JRadioButton rbSubCompleto;
-    private javax.swing.JRadioButton rbSubPendiente;
+    public static javax.swing.JRadioButton rbSubCompleto;
+    public static javax.swing.JRadioButton rbSubPendiente;
     public static javax.swing.JTextField txtNewNombre;
     public static javax.swing.JTextField txtNewNota;
-    private javax.swing.JTextField txtSubNombre;
-    private javax.swing.JTextField txtSubNota;
+    public static javax.swing.JTextField txtSubNombre;
+    public static javax.swing.JTextField txtSubNota;
     // End of variables declaration//GEN-END:variables
     
     Conectar cc= new Conectar();

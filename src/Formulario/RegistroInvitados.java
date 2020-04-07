@@ -6,6 +6,7 @@
 package Formulario;
 
 import Conectar.Conectar;
+import static java.lang.Thread.sleep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author TAMY-IA
  */
-public class RegistroInvitados extends javax.swing.JInternalFrame {
+public class RegistroInvitados extends javax.swing.JInternalFrame implements Runnable{
 
     DefaultTableModel model;
     /**
@@ -25,12 +26,27 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
      */
     public RegistroInvitados() {
         initComponents();
+        this.setLocation(440, 50);
         CargarLista("");
+    }
+    
+    public void run(){
+        int i=0;
+        while(true){
+            CargarLista("");
+            i++;
+            System.out.println("hilo--->"+i);
+            try{
+                sleep(1000);
+            }catch(Exception ex){
+                
+            }
+        }
     }
     
     void CargarLista(String valor){
         try{
-            String[] titulos={"Id","Nombre","Relacion","Mesa","Asistencia"};
+            String[] titulos={"ID","Nombre","Relacion","Mesa","Asistencia"};
             String[] registros=new String[5];
             model=new DefaultTableModel(null, titulos);
             
@@ -41,20 +57,20 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
             
             while(rs.next()){
                 registros[0]=rs.getString(1);
-                registros[1]=rs.getString(2);
-                registros[2]=rs.getString(7);
-                registros[3]=rs.getString(8);
-                registros[4]=rs.getString(12);
+                registros[1]=rs.getString(3);
+                registros[2]=rs.getString(8);
+                registros[3]=rs.getString(9);
+                registros[4]=rs.getString(13);
                 
                 model.addRow(registros);
             }
             
             tbInvitados.setModel(model);
-            tbInvitados.getColumnModel().getColumn(0).setPreferredWidth(20);
-            tbInvitados.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tbInvitados.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tbInvitados.getColumnModel().getColumn(1).setPreferredWidth(225);
             tbInvitados.getColumnModel().getColumn(2).setPreferredWidth(20);
-            tbInvitados.getColumnModel().getColumn(3).setPreferredWidth(20);
-            tbInvitados.getColumnModel().getColumn(4).setPreferredWidth(20);
+            tbInvitados.getColumnModel().getColumn(3).setPreferredWidth(10);
+            tbInvitados.getColumnModel().getColumn(4).setPreferredWidth(10);
             
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, "Error al cargar la lista\n"+ex);
@@ -74,8 +90,8 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbInvitados = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,6 +99,7 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
         btnAsistencia = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Asistencia");
 
         tbInvitados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -106,33 +123,43 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Modificar");
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jButton1)
+                .addGap(79, 79, 79)
+                .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(63, 63, 63))
+                .addComponent(btnModificar)
+                .addGap(62, 62, 62))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(40, Short.MAX_VALUE))
+                    .addComponent(btnEliminar)
+                    .addComponent(btnModificar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setText("Buscar:");
@@ -158,7 +185,7 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(77, 77, 77)
+                .addGap(94, 94, 94)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -169,7 +196,7 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(101, 101, 101)))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +230,7 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -246,11 +273,84 @@ public class RegistroInvitados extends javax.swing.JInternalFrame {
         CargarLista(txtNombre.getText());
     }//GEN-LAST:event_txtNombreKeyReleased
 
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        int fila = tbInvitados.getSelectedRow();
+	
+        try {
+
+            String id="",nombre="",relacion="",mesa="";
+
+           if(fila==-1){
+               JOptionPane.showMessageDialog(null, "No ha seleccionado ningun presupuesto");
+           }else{
+               
+               RegistrarInvitados ri=new RegistrarInvitados();
+               Principal.jdpEscritorio.add(ri);
+               ri.setVisible(true);
+         
+               id=(String)tbInvitados.getValueAt(fila, 0).toString();
+               nombre =  (String)tbInvitados.getValueAt(fila, 1).toString();
+               relacion =  (String)tbInvitados.getValueAt(fila, 2).toString();
+               mesa =  (String)tbInvitados.getValueAt(fila, 3).toString();
+               //estimada =  (String)tbInvitados.getValueAt(fila, 4).toString();
+
+               RegistrarInvitados.jlTitulo.setText("Actualizar Invitado");
+               RegistrarInvitados.jlId.setText(id);
+               RegistrarInvitados.txtNombre.setText(nombre);
+               RegistrarInvitados.txtRelacion.setText(relacion);
+               RegistrarInvitados.txtMesa.setText(mesa);
+               ri.CargarDatos(id);
+               /*
+               RegistrarInvitados.txtNota.setText(nota);
+               RegistrarInvitados.txtCantidad.setText(estimada);
+               RegistrarInvitados.jlEquilibrar.setText(estimada);
+               */
+            
+            this.dispose();
+
+           }
+       }catch (Exception e) {
+           System.out.println("Error aol enviar datos\n"+e);
+       }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int filase1= tbInvitados.getSelectedRow();
+        int confirmar=JOptionPane.showConfirmDialog(null, "¿Eliminar Invitado?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
+        
+        if(confirmar==JOptionPane.YES_OPTION){
+            try{
+            if(filase1==-1){
+                JOptionPane.showMessageDialog(null, "Seleccione el invitado a eliminar");
+            }else{
+                String cod=(String)tbInvitados.getValueAt(filase1, 0);
+                String eliminarSQL="DELETE FROM asistencia_invitado WHERE `idAsistencia_Invitado`='"+cod+"'";
+                try{
+                    PreparedStatement pst = cn.prepareStatement(eliminarSQL);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Eliminado");
+                    CargarLista("");
+                    
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+            
+        }catch(Exception e){
+            
+        }
+        }else{
+            //JOptionPane.showMessageDialog(null, "cancelado");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsistencia;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
