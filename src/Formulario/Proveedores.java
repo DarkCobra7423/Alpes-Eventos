@@ -75,26 +75,6 @@ public class Proveedores extends javax.swing.JInternalFrame {
         
     }
     
-   /* void ActualizarPresupuesto(){
-        String categoria=String.valueOf(jcbCategoria.getSelectedItem());
-        String sql="UPDATE presupuesto SET `nombre`='"+txtNewNombre.getText()+"', `categoria`='"+categoria+"', `nota`='"+txtNewNota.getText()+"', `estimada`='"+txtEstimada.getText()+"', `folio`='"+jlFolio.getText()+"' WHERE `folio`='"+jlFolio.getText()+"'";
-        
-        try{
-            PreparedStatement pst=cn.prepareStatement(sql);
-            pst.executeUpdate();
-            LimpiarPanelProveedor();
-            
-            ListaPresupuesto lp=new ListaPresupuesto();
-            Principal.jdpEscritorio.add(lp);
-            lp.setVisible(true);
-            
-            this.dispose();
-            
-        }catch(Exception e){
-            System.out.println("error al actualizar clase presupuesto\n"+e);
-        }
-    }   */
-    
     void LimpiarPanelProveedor(){
         txtNewNombre.setText("");
         //jcbCategoria

@@ -107,6 +107,34 @@ public class Pendientes extends javax.swing.JInternalFrame {
             System.out.println("Error al cargar la lista elementos presupuesto\n"+e);
         }
     }
+    
+    public void CargarPagosProveedores(String valor){
+        try{
+            String[] titulos={"Folio","Nombre","Cantidad","Estado","Expiracion"};
+            String[] registros=new String[5];
+            model=new DefaultTableModel(null, titulos);
+            String cons="SELECT `folio`, `nombre`, `cantidad`, `estado`, `expiracion` FROM pagos WHERE estado='"+valor+"'";
+            
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(cons);
+            
+            while(rs.next()){
+                registros[0]=rs.getString(1);
+                registros[1]=rs.getString(2);
+                registros[2]=rs.getString(3);
+                registros[3]=rs.getString(4);
+                registros[4]=rs.getString(5);
+                
+                model.addRow(registros);
+                
+            }
+            
+            tbElementos.setModel(model);
+            
+        }catch(Exception e){
+            System.out.println("Error al cargar la lista elementos presupuesto\n"+e);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -120,9 +148,6 @@ public class Pendientes extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbElementos = new javax.swing.JTable();
-        txtBuscar = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        btnEliminar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Tablero");
@@ -150,23 +175,10 @@ public class Pendientes extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtBuscarKeyReleased(evt);
-            }
-        });
-
-        jLabel1.setText("Buscar:");
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,27 +186,13 @@ public class Pendientes extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar)
-                        .addGap(173, 173, 173))))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnEliminar))
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(27, 27, 27))
         );
@@ -202,50 +200,11 @@ public class Pendientes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
-        // TODO add your handling code here:
-        //Cargar(txtBuscar.getText());
-    }//GEN-LAST:event_txtBuscarKeyReleased
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        /*
-        int filase1= tbElementos.getSelectedRow();
-        int confirmar=JOptionPane.showConfirmDialog(null, "¿Eliminar Presupuesto?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
-
-        if(confirmar==JOptionPane.YES_OPTION){
-            try{
-                if(filase1==-1){
-                    JOptionPane.showMessageDialog(null, "Seleccione el presupuesto a eliminar");
-                }else{
-                    String cod=(String)tbElementos.getValueAt(filase1, 0);
-                    String eliminarSQL="DELETE FROM Presupuesto WHERE folio='"+cod+"'";
-                    try{
-                        PreparedStatement pst = cn.prepareStatement(eliminarSQL);
-                        pst.executeUpdate();
-                        JOptionPane.showMessageDialog(null, "Presupuesto Eliminado");
-                        Cargar("");
-
-                    }catch(Exception e){
-                        JOptionPane.showMessageDialog(null, e);
-                    }
-                }
-
-            }catch(Exception e){
-
-            }
-        }
-        */
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbElementos;
-    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
     Conectar cc=new Conectar();
     Connection cn=cc.conexion();

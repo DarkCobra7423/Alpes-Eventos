@@ -5,18 +5,62 @@
  */
 package Formulario;
 
+import Conectar.Conectar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author TAMY-IA
  */
 public class ListaProveedores extends javax.swing.JInternalFrame {
 
+    DefaultTableModel model;
     /**
      * Creates new form ListaProveedores
      */
     public ListaProveedores() {
         initComponents();
         this.setLocation(440, 50);
+        Cargar("");
+        btnModificar.setVisible(false);
+    }
+    
+    void Cargar(String valor){
+        try{
+            String[] titulos={"Folio", "Nombre", "Categoria", "Nota", "Estimada", "Telefono", "Correo", "Sitio Web", "Direccion"};
+            String[] registros=new String[9];
+            model=new DefaultTableModel(null, titulos);
+            String cons="SELECT * FROM proveedores WHERE CONCAT (`folio`, `nombre`, `categoria`, `nota`, `estimada`, `telefono`, `correo`, `sitioweb`, `direccion`) LIKE '%"+valor+"%'";
+            
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(cons);
+            
+            while(rs.next()){
+                registros[0]=rs.getString(2);
+                registros[1]=rs.getString(3);
+                registros[2]=rs.getString(4);
+                registros[3]=rs.getString(5);
+                registros[4]=rs.getString(6);
+                registros[5]=rs.getString(7);
+                registros[6]=rs.getString(8);
+                registros[7]=rs.getString(9);
+                registros[8]=rs.getString(10);
+                
+                model.addRow(registros);
+                
+            }
+            
+            tbProveedores.setModel(model);
+            
+        }catch(Exception e){
+            System.out.println("Error al cargar la lista\n"+e);
+        }
+        
     }
 
     /**
@@ -30,16 +74,16 @@ public class ListaProveedores extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbProveedores = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Lista De Proveedores");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -50,20 +94,20 @@ public class ListaProveedores extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbProveedores);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -74,9 +118,19 @@ public class ListaProveedores extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("jButton2");
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -86,19 +140,19 @@ public class ListaProveedores extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jButton1)
+                .addGap(19, 19, 19)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnModificar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -109,7 +163,7 @@ public class ListaProveedores extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -135,14 +189,88 @@ public class ListaProveedores extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        int filase1= tbProveedores.getSelectedRow();
+        int confirmar=JOptionPane.showConfirmDialog(null, "¿Eliminar Presupuesto?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION);
+        
+        if(confirmar==JOptionPane.YES_OPTION){
+            try{
+            if(filase1==-1){
+                JOptionPane.showMessageDialog(null, "Seleccione el presupuesto a eliminar");
+            }else{
+                String cod=(String)tbProveedores.getValueAt(filase1, 0);
+                String eliminarSQL="DELETE FROM proveedores WHERE folio='"+cod+"'";
+                try{
+                    PreparedStatement pst = cn.prepareStatement(eliminarSQL);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Presupuesto Eliminado");
+                    Cargar("");
+                    
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+            
+        }catch(Exception e){
+            
+        }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        /*
+        int fila = tbProveedores.getSelectedRow();
+	
+        try {
+
+            String idProveedores, folio, nombre, categoria, nota, estimada, telefono, correo, sitioweb, direccion;
+
+           if(fila==-1){
+               JOptionPane.showMessageDialog(null, "No ha seleccionado ninguna tarea");
+           }else{
+               
+               NuevaTarea nt=new NuevaTarea();
+               Principal.jdpEscritorio.add(nt);
+               nt.setVisible(true);
+        
+               nombre =  (String)tbProveedores.getValueAt(fila, 0).toString();
+               categoria =  (String)tbProveedores.getValueAt(fila, 1).toString();
+               nota =  (String)tbProveedores.getValueAt(fila, 2).toString();
+               estado =  (String)tbProveedores.getValueAt(fila, 3).toString();
+               fecha=(String)tbProveedores.getValueAt(fila, 4).toString();
+               
+               NuevaTarea.txtNewNombre.setText(nombre);
+               NuevaTarea.jcbNewCategoria.setSelectedItem(categoria);
+               NuevaTarea.txtNewNota.setText(nota);
+               if(estado.equals("Pendiente")){
+                   NuevaTarea.rbNewPendiente.setSelected(true);
+               }else if(estado.equals("Completo")){
+                   NuevaTarea.rbNewCompleto.setSelected(true);
+               }
+               //NuevaTarea.jcNewFecha.setDate(date);////////////////NO SE COMO HACERLO
+               nt.DesbloquearTarea();
+
+            this.dispose();
+
+           }
+       }catch (Exception e) {
+           System.out.println("Error aol enviar datos\n"+e);
+       }
+    */
+    }//GEN-LAST:event_btnModificarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbProveedores;
     // End of variables declaration//GEN-END:variables
+    Conectar cc=new Conectar();
+    Connection cn=cc.conexion();
 }
