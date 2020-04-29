@@ -32,6 +32,7 @@ public class Principal extends javax.swing.JFrame {
         hilo.start();
         Folio();
         jlFolio.setVisible(false);
+        ObtenerCorreos();
     }
        
     void Folio(){
@@ -107,6 +108,34 @@ public class Principal extends javax.swing.JFrame {
         jmNuevo.setEnabled(false);
         jmRegistrar.setEnabled(false);
         btnPresupuesto.setEnabled(false);
+        jmBandeja.setVisible(false);
+    }
+    
+    void ObtenerCorreos(){
+        Conectar cc=new Conectar();
+        Connection cn=cc.conexion();
+        //SELECT COUNT(*) FROM buzon WHERE `leido`='0'
+        String c="";
+        String leidos="SELECT COUNT(*) FROM buzon WHERE `leido`='0'";
+        
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs=st.executeQuery(leidos);
+            if(rs.next()){              
+                 c=rs.getString(1);
+            }
+            
+            if(c==null){
+                jmBandeja.setText("(0) Bandeja De Correos");
+            }
+            else{
+                 jmBandeja.setText("("+c+ ") Bandeja De Correos");
+            }
+            cc.CerrarConexion();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener correo principal \n"+ex);
+           Logger.getLogger(Presupuesto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -127,8 +156,11 @@ public class Principal extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jlHora = new javax.swing.JLabel();
         jlFolio = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jmArchivo = new javax.swing.JMenu();
+        jmBandeja = new javax.swing.JMenuItem();
+        jmCorreo = new javax.swing.JMenuItem();
         jmNuevo = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
@@ -188,7 +220,7 @@ public class Principal extends javax.swing.JFrame {
         btnProveedores.setBounds(240, 200, 190, 70);
 
         jButton5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/sql.png"))); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mini_tablero.jpg"))); // NOI18N
         jButton5.setText("Tablero");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,19 +240,49 @@ public class Principal extends javax.swing.JFrame {
         jdpEscritorio.add(jlFolio);
         jlFolio.setBounds(190, 10, 110, 20);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ALPES logo.png"))); // NOI18N
+        jdpEscritorio.add(jLabel1);
+        jLabel1.setBounds(100, 0, 1250, 680);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jdpEscritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE)
+            .addComponent(jdpEscritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 1350, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jdpEscritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE)
+            .addComponent(jdpEscritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
         );
 
         jmArchivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/archivo_2.png"))); // NOI18N
         jmArchivo.setText("Archivo");
+        jmArchivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jmArchivoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jmArchivoMouseEntered(evt);
+            }
+        });
+
+        jmBandeja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mini_CORREO 1.png"))); // NOI18N
+        jmBandeja.setText("0 Bandeja De Correo");
+        jmBandeja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmBandejaActionPerformed(evt);
+            }
+        });
+        jmArchivo.add(jmBandeja);
+
+        jmCorreo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mini_CORREO.png"))); // NOI18N
+        jmCorreo.setText("Nuevo Correo");
+        jmCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCorreoActionPerformed(evt);
+            }
+        });
+        jmArchivo.add(jmCorreo);
 
         jmNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/modif.png"))); // NOI18N
         jmNuevo.setText("Nuevo Usuario");
@@ -393,6 +455,31 @@ public class Principal extends javax.swing.JFrame {
         lg.setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
+    private void jmBandejaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmBandejaActionPerformed
+        // TODO add your handling code here:
+        BuzonCorreoPendientes bcp=new BuzonCorreoPendientes();
+        jdpEscritorio.add(bcp);
+        bcp.setVisible(true);
+    }//GEN-LAST:event_jmBandejaActionPerformed
+
+    private void jmCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCorreoActionPerformed
+        // TODO add your handling code here:
+        EnviarCorreo ec=new EnviarCorreo();
+        Principal.jdpEscritorio.add(ec);
+        ec.setVisible(true);
+    }//GEN-LAST:event_jmCorreoActionPerformed
+
+    private void jmArchivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmArchivoMouseClicked
+        // TODO add your handling code here:
+        //JOptionPane.showMessageDialog(null, "funciona el evento para el correo");
+    }//GEN-LAST:event_jmArchivoMouseClicked
+
+    private void jmArchivoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmArchivoMouseEntered
+        // TODO add your handling code here:
+        //JOptionPane.showMessageDialog(null, "funciona el evento para el correo 1");
+        ObtenerCorreos();
+    }//GEN-LAST:event_jmArchivoMouseEntered
+
     /**
      * @param args the command line arguments
      */
@@ -436,6 +523,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnPresupuesto;
     private javax.swing.JButton btnProveedores;
     private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
@@ -446,6 +534,8 @@ public class Principal extends javax.swing.JFrame {
     public static javax.swing.JLabel jlFolio;
     private javax.swing.JLabel jlHora;
     private javax.swing.JMenu jmArchivo;
+    private javax.swing.JMenuItem jmBandeja;
+    private javax.swing.JMenuItem jmCorreo;
     public static javax.swing.JMenu jmFolio;
     private javax.swing.JMenuItem jmNuevo;
     private javax.swing.JMenu jmRegEventos;
